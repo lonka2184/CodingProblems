@@ -4,7 +4,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -104,38 +107,39 @@ public class BasePage {
     }
 
 
-    public boolean waitForElementToBeVisible(By locator, int maxWaitTimeMs) {
-
-        WebElement element;
-        boolean isElementVisible;
-        long startTimeMs = System.currentTimeMillis() % 1000;
-        long currTimeMs;
-        do {
-            try {
-                element = driver.findElement(locator);
-                isElementVisible = element.isDisplayed();
-                if (!isElementVisible)
-                {
-                    try {
-                        Thread.sleep(200);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-            } catch (Exception e) {
-                // Unable to retrieve element, therefore it is not visible
-                isElementVisible = false;
-            }
-            // Get current time
-            currTimeMs = System.currentTimeMillis() % 1000;
-
-        } while (((currTimeMs - startTimeMs) <= maxWaitTimeMs) && (!isElementVisible));
-
-        return isElementVisible;
+    public void waitForElementToBeVisible(By locator, int maxWaitTimeMs) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(maxWaitTimeMs));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+//
+//        WebElement element;
+//        boolean isElementVisible;
+//        long startTimeMs = System.currentTimeMillis() % 1000;
+//        long currTimeMs;
+//        do {
+//            try {
+//                element = driver.findElement(locator);
+//                isElementVisible = element.isDisplayed();
+//                if (!isElementVisible)
+//                {
+//                    try {
+//                        Thread.sleep(200);
+//                    } catch (InterruptedException e) {
+//                        throw new RuntimeException(e);
+//                    }
+//                }
+//            } catch (Exception e) {
+//                // Unable to retrieve element, therefore it is not visible
+//                isElementVisible = false;
+//            }
+//            // Get current time
+//            currTimeMs = System.currentTimeMillis() % 1000;
+//
+//        } while (((currTimeMs - startTimeMs) <= maxWaitTimeMs) && (!isElementVisible));
+//
+//        return isElementVisible;
     }
 
     public boolean waitForElementToBeInvisible(By locator, int maxWaitTimeMs) {
-
         WebElement element;
         boolean isElementVisible;
         long startTimeMs = System.currentTimeMillis() % 1000;

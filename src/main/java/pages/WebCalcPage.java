@@ -207,13 +207,13 @@ public class WebCalcPage extends BasePage{
         waitForElementToBeInvisible(clearHistoryBtn, 3000);
     }
 
-    public String getHistoryItemByIndex(int index)
-    {
-        String genericHistItemCssStr = "#histframe > ul > li:nth-child(#index) > p.l";
-        String cssStr = genericHistItemCssStr.replace("#index", String.valueOf(index));
-        WebElement el = findElement(new By.ByCssSelector(cssStr), 1000);
-        return el.getText();
-    }
+//    public String getHistoryItemByIndex(int index)
+//    {
+//        String genericHistItemCssStr = "#histframe > ul > li:nth-child(#index) > p.l";
+//        String cssStr = genericHistItemCssStr.replace("#index", String.valueOf(index));
+//        WebElement el = findElement(new By.ByCssSelector(cssStr), 1000);
+//        return el.getText();
+//    }
 
     public List<String> getAllHistoryItemsOnLeft()
     {
