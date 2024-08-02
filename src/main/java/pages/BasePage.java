@@ -26,7 +26,6 @@ public class BasePage {
 
     public String getElementText(By locator) {
         String text = "";
-
         WebElement element = findElement(locator, 1000);
         if (element != null) {
             text = element.getText();
@@ -36,7 +35,6 @@ public class BasePage {
 
     public String getElementValueAttribute(By locator) {
         String valAttribute = "";
-
         WebElement element = findElement(locator, 1000);
         if (element != null) {
             valAttribute = element.getAttribute("value");
@@ -45,54 +43,14 @@ public class BasePage {
     }
 
     public WebElement findElement(By locator, int maxWaitTimeMs) {
-        WebElement element = null;
-        long startTimeMs = System.currentTimeMillis() % 1000;
-        long currTimeMs;
-        do {
-            try {
-                element = driver.findElement(locator);
-            } catch (Exception e) {
-                // Unable to retrieve element
-
-                // Wait before retrying
-                try {
-                    Thread.sleep(200);
-                } catch (InterruptedException ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
-            // Get current time
-            currTimeMs = System.currentTimeMillis() % 1000;
-
-        } while (((currTimeMs - startTimeMs) <= maxWaitTimeMs) && (element == null));
-
-        return element;
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(maxWaitTimeMs));
+        return wait.until(ExpectedConditions.presenceOfElementLocated(locator));
     }
 
 
     public List<WebElement> findElements(By locator, int maxWaitTimeMs) {
-        List<WebElement> elements = null;
-        long startTimeMs = System.currentTimeMillis() % 1000;
-        long currTimeMs;
-        do {
-            try {
-                elements = driver.findElements(locator);
-            } catch (Exception e) {
-                // Unable to retrieve element(s)
-
-                // Wait before retrying
-                try {
-                    Thread.sleep(200);
-                } catch (InterruptedException ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
-            // Get current time
-            currTimeMs = System.currentTimeMillis() % 1000;
-
-        } while (((currTimeMs - startTimeMs) <= maxWaitTimeMs) && ((elements == null) || (elements.isEmpty())));
-
-        return elements;
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(maxWaitTimeMs));
+        return wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(locator));
     }
 
     public List<String> getTextOfMatchingElements(By locator) {
@@ -107,36 +65,10 @@ public class BasePage {
     }
 
 
-    public void waitForElementToBeVisible(By locator, int maxWaitTimeMs) {
+    public boolean waitForElementToBeVisible(By locator, int maxWaitTimeMs) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(maxWaitTimeMs));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
-//
-//        WebElement element;
-//        boolean isElementVisible;
-//        long startTimeMs = System.currentTimeMillis() % 1000;
-//        long currTimeMs;
-//        do {
-//            try {
-//                element = driver.findElement(locator);
-//                isElementVisible = element.isDisplayed();
-//                if (!isElementVisible)
-//                {
-//                    try {
-//                        Thread.sleep(200);
-//                    } catch (InterruptedException e) {
-//                        throw new RuntimeException(e);
-//                    }
-//                }
-//            } catch (Exception e) {
-//                // Unable to retrieve element, therefore it is not visible
-//                isElementVisible = false;
-//            }
-//            // Get current time
-//            currTimeMs = System.currentTimeMillis() % 1000;
-//
-//        } while (((currTimeMs - startTimeMs) <= maxWaitTimeMs) && (!isElementVisible));
-//
-//        return isElementVisible;
+        WebElement el = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+        return el != null;
     }
 
     public boolean waitForElementToBeInvisible(By locator, int maxWaitTimeMs) {
@@ -159,6 +91,5 @@ public class BasePage {
 
         return isElementVisible;
     }
-
 
 }
