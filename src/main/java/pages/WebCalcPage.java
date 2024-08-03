@@ -1,7 +1,6 @@
 package pages;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
@@ -206,14 +205,6 @@ public class WebCalcPage extends BasePage{
         findElement(collapseHistoryBtn, 1000).click();
         waitForElementToBeInvisible(clearHistoryBtn, 3000);
     }
-
-//    public String getHistoryItemByIndex(int index)
-//    {
-//        String genericHistItemCssStr = "#histframe > ul > li:nth-child(#index) > p.l";
-//        String cssStr = genericHistItemCssStr.replace("#index", String.valueOf(index));
-//        WebElement el = findElement(new By.ByCssSelector(cssStr), 1000);
-//        return el.getText();
-//    }
 
     public List<String> getAllHistoryItemsOnLeft()
     {
